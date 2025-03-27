@@ -32,9 +32,14 @@ if [ ! $(git rev-parse --verify submission 2>/dev/null) ]; then
   git branch submission 2>/dev/null
 fi
 
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
 echo "Pushing all changes"
 git push --all origin
+git checkout submission
 git commit -m "Submission" --allow-empty
+git push origin submission
+git checkout $CURRENT_BRANCH
 
 if [[ -z $OPEN_PR ]]; then
   echo "You don't have an open PR for $EXERCISE_NAME yet, creating one on your behalf"
